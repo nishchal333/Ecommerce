@@ -69,15 +69,40 @@ const Wrapper = styled.section`
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 0.8rem;
     }
 
     .card-data--price {
       color: ${({ theme }) => theme.colors.helper};
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      white-space: nowrap;
+      background: ${({ theme }) => theme.colors.helper}16;
+      border-radius: 0.4rem;
+      padding: 0.6rem 0.8rem;
     }
 
     h3 {
       color: ${({ theme }) => theme.colors.text};
       text-transform: capitalize;
+      flex: 1;
+      min-width: 0;
+      font-size: 1.5rem;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .caption {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.08rem;
+      line-height: 1;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.9);
+      color: ${({ theme }) => theme.colors.helper};
+      padding: 0.5rem 0.7rem;
+      border-radius: 0.3rem;
     }
 
     .btn {
@@ -98,6 +123,35 @@ const Wrapper = styled.section`
       a {
         color: rgb(98 84 243);
         font-size: 1.4rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .card-data-flex {
+        align-items: flex-start;
+      }
+
+      h3 {
+        font-size: 1.4rem;
+      }
+
+      .card-data--price {
+        font-size: 1.5rem;
+        padding: 0.5rem 0.6rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card-data-flex {
+        display: block;
+      }
+
+      h3 {
+        margin-bottom: 0.8rem;
+      }
+
+      .card-data--price {
+        display: inline-block;
       }
     }
   }

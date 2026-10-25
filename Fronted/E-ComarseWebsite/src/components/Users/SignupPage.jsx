@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled ,{ keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../Context/AuthContext';
 
 const fadeIn = keyframes`
 from {
@@ -156,6 +157,7 @@ const Register = () => {
    const [showSignupModal, setShowSignupModal] = useState(false);
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const { name, email, password } = formData;
 
@@ -167,7 +169,7 @@ const onSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const res = await axios.post('https://bharat-ecommarse-2.onrender.com/api/users/register', formData);
+    const res = await axios.post('http://localhost:3000/api/users/register', formData);
     if (res.data.msg) {
       // If there's a message in the response data, it means signup failed
       alert('Signup failed: ' + res.data.msg);
@@ -175,13 +177,13 @@ const onSubmit = async (e) => {
       // Signup successful
       alert('Signup successful');
       setShowSignupModal(false);
-      localStorage.setItem('token', res.data.token);
+      login(res.data.token);
       setFormData({
         name: '',
         email: '',
         password: ''
       });
-       navigate('/');
+       navigate('/ProducrCard');
     }
   } catch (err) {
     if (err.response) {

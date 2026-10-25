@@ -8,15 +8,23 @@ const ProductReducer = (state,action) =>{
           };
     
         case "SET_API_DATA":
-          const featureData = action.payload.filter((curElem) => {
+          const products = action.payload.products || [];
+          const featureData = products.filter((curElem) => {
             return curElem.featured === true;
           });
        
           return {
             ...state, 
             isLoading: false,
-            products: action.payload,
+            products,
             featureProducts: featureData,
+            totalPages: action.payload.pagination?.pages || 1,
+          };
+
+        case "SET_PAGE":
+          return {
+            ...state,
+            currentPage: action.payload,
           };
     
         case "API_ERROR":

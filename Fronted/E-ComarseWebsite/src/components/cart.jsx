@@ -54,19 +54,20 @@ function cart() {
         <div className="order-total--amount">
 <div className="order-total--subdata">
   <div className="">
-    <p>subtotal:</p>
-    <p>
-      <FormatPrice price={total_price}/>
-    </p>
-    <p>
-      <FormatPrice price={shipping_fee}/>
-    </p>
+    <span>
+      <p>Subtotal:</p>
+    <p><FormatPrice price={total_price*100}/></p>
+    </span>
+    <span>
+      <p>Shipping fee:</p>
+      <p><FormatPrice price={shipping_fee}/></p>
+    </span>
   </div>
   <hr/>
   <div className="">
-    <p>order total:</p>
+    <p>Order total:</p>
     <p>
-      <FormatPrice price={total_price+ shipping_fee}/>
+      <FormatPrice price={(total_price*100 + shipping_fee)}/>
     </p>
 
   </div>
@@ -74,7 +75,7 @@ function cart() {
     {/* go to payment button */}
     <br/>
     <hr/>
-    <button className='Button' onClick={handlePaymentRedirect}>go to payemet</button>
+    <button className='Button' onClick={handlePaymentRedirect}>Go to payemet</button>
 
         </div>
       </div>

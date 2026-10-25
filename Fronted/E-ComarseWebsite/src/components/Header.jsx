@@ -14,7 +14,6 @@ function Header() {
           <NavLink to="/" className="logo-wrapper">
             <img className="logo" src='logo.png' alt="electromart" />
             <div className="logo-text">
-              {/* <h1>ElectroMart</h1> */}
               <p>Your Electronics Destination</p>
             </div>
           </NavLink>

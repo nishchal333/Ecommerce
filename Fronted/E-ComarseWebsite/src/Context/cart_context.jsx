@@ -1,19 +1,27 @@
-import React from 'react'
+/* eslint-disable react/prop-types */
 import reducer from "../Reducer/cart_reducer";
 
 import {  createContext, useContext, useEffect ,useReducer} from "react";
-import { json } from 'react-router-dom';
 
 const CartContext = createContext();
 
 const getLocalCartData = ()=>{
+  if (!localStorage.getItem("token")) {
+    return [];
+  }
+
   let localCartData = localStorage.getItem("BharatData");
-  // if(localCartData == []){
-  //   return [];
-  // }else {
-  //   return JSON.parse(localCartData);
-  // }
-  const parseData = JSON.parse(localCartData);
+  if (!localCartData) {
+    return [];
+  }
+
+  let parseData;
+  try {
+    parseData = JSON.parse(localCartData);
+  } catch {
+    return [];
+  }
+
   if(! Array.isArray(parseData)) return [];
 
   return parseData;
@@ -25,11 +33,28 @@ const initialState = {
   cart: getLocalCartData(),
   total_item: "",
   total_price: "",
-  shipping_fee: 4000,
+  shipping_fee: 40,
 };
 
 const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    const clearCartOnLogout = () => {
+      dispatch({ type: "CLEAR_CART" });
+      localStorage.removeItem("BharatData");
+    };
+
+    window.addEventListener("auth:logout", clearCartOnLogout);
+
+    if (!localStorage.getItem("token")) {
+      clearCartOnLogout();
+    }
+
+    return () => {
+      window.removeEventListener("auth:logout", clearCartOnLogout);
+    };
+  }, []);
 
   const addToCart = (_id, color, amount, product) => { 
     
@@ -77,4 +102,5 @@ const useCartContext = () => {
   return useContext(CartContext);
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { CartProvider, useCartContext };

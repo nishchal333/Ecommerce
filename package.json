@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "dev": "npm --prefix Fronted/E-ComarseWebsite run dev",
+    "dev:backend": "npm --prefix Backend run dev",
+    "start": "npm --prefix Backend start",
+    "build": "npm --prefix Fronted/E-ComarseWebsite run build"
+  },
   "dependencies": {
     "razorpay": "^2.9.4",
     "shortid": "^2.2.16"

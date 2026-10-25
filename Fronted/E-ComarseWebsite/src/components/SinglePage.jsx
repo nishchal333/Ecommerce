@@ -7,7 +7,7 @@ import MyImage from './MyImage';
 import { Container } from '../Style/container';
 import AddToCart from "./AddToCart";
 import FormatPrice from './Helper/FormatePrice';
-const API =  "https://bharat-ecommarse-2.onrender.com/api/products"; 
+const API = "http://localhost:3000/api/products";
 import { MdSecurity } from "react-icons/md";
 import { TbTruckDelivery, TbReplace } from "react-icons/tb";
 import Star from './Star';
@@ -74,11 +74,11 @@ if(isSingleLoading) {
         
         <p className='product-data-price'>
       MRP:<del>
-        <FormatPrice price={price+250000}/>
+        <FormatPrice price={(price + 250000) * 100}/>
       </del>
         </p>
         <p className="product-data-price product-data-real-price">
-              Deal of the Day: <FormatPrice price={price} />
+              Deal of the Day: <FormatPrice price={price * 100} />
             </p>
             <p>{description}</p>
             <div className="product-data-warranty">
@@ -89,17 +89,17 @@ if(isSingleLoading) {
 
               <div className="product-warranty-data">
                 <TbReplace className="warranty-icon" />
-                <p>30 Days Replacement</p>
+                <p>15 Days Replacement</p>
               </div>
 
               <div className="product-warranty-data">
                 <TbTruckDelivery className="warranty-icon" />
-                <p>Bharat Delivered </p>
+                <p>ElectroMart Delivery </p>
               </div>
 
               <div className="product-warranty-data">
                 <MdSecurity className="warranty-icon" />
-                <p>2 Year Warranty </p>
+                <p>1 Year Warranty </p>
               </div>
             </div>
             <div className="product-data-info">

@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/User');
 const { body, validationResult } = require('express-validator');
+const { useNavigate } = require("react-router-dom");
+
 
 
 // Function to generate JWT token
@@ -25,8 +27,6 @@ exports.registerUser = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
-
   try {
     let user = await User.findOne({ email });
     if (user) {
@@ -43,11 +43,10 @@ exports.registerUser = async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
 
     await user.save();
-
     // Generate JWT token
     const token = generateToken(user.id);
 
-    res.json({ token });
+    res.json({ token, msg: 'User registered successfully' });
   } catch (err) {
     console.error('Error during user registration:', err.message);
 
@@ -63,8 +62,6 @@ exports.loginUser = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  
-
   try {
     let user = await User.findOne({ email });
     if (!user) {
@@ -75,7 +72,6 @@ exports.loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ msg: 'incorect username or password' });
     }
-
     // Generate JWT token
     const token = generateToken(user.id);
 

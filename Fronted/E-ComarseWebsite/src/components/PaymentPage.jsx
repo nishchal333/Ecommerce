@@ -9,17 +9,34 @@ import { Button } from '../Style/Button';
 const PaymentPage = () => {
   const { total_price, shipping_fee } = useCartContext();
   const navigate = useNavigate();
-  const orderTotal = total_price + shipping_fee;
+  const [isProcessing, setIsProcessing] = React.useState(false);
+  const [paymentError, setPaymentError] = React.useState('');
+  const subtotal = Number(total_price || 0);
+  const shippingAmount = Number(shipping_fee || 0);
+  const orderTotal = subtotal + shippingAmount;
+  const orderAmount = Math.round(orderTotal * 100);
 
   const handlePayment = async () => {
+    if (isProcessing) return;
+
+    setPaymentError('');
+    setIsProcessing(true);
+
     try {
-      const orderUrl = 'https://bharat-ecommarse-2.onrender.com/api/payment/create-order';
-      const response = await axios.post(orderUrl, { amount: orderTotal, currency: 'INR' });
+      if (!window.Razorpay) {
+        throw new Error('Razorpay Checkout has not loaded. Refresh the page and try again.');
+      }
+
+      const orderUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/payment/create-order`;
+      const response = await axios.post(orderUrl, { amount: orderAmount, currency: 'INR' });
 
       const { id, currency, amount } = response.data;
+      if (!id || !currency || !amount) {
+        throw new Error('The server returned an invalid payment order.');
+      }
 
       const options = {
-        key: 'rzp_test_b7xXFHwa5522AQ', // Razorpay key ID
+        key: 'rzp_test_ShpGyQ24BY0kCx', // Razorpay key ID
         amount,
         currency,
         name: 'ElectroMart',
@@ -46,9 +63,21 @@ const PaymentPage = () => {
       };
 
       const rzp1 = new window.Razorpay(options);
+      rzp1.on('payment.failed', (paymentError) => {
+        console.error('Razorpay payment failed', paymentError.error);
+        setPaymentError(paymentError.error?.description || 'Payment failed. Please try again.');
+        setIsProcessing(false);
+      });
       rzp1.open();
     } catch (error) {
-      console.error('Payment failed', error);
+      console.error('Payment setup failed', error.response?.data || error.message);
+      const serverMessage = error.response?.data?.message;
+      setPaymentError(
+        serverMessage ||
+        error.message ||
+        'Unable to start payment. Please try again.'
+      );
+      setIsProcessing(false);
     }
   };
 
@@ -59,18 +88,21 @@ const PaymentPage = () => {
         <div className="summary">
           <div>
             <p>Subtotal:</p>
-            <p><FormatPrice price={total_price} /></p>
+            <p><FormatPrice price={subtotal * 100} /></p>
           </div>
           <div>
             <p>Shipping Fee:</p>
-            <p><FormatPrice price={shipping_fee} /></p>
+            <p><FormatPrice price={shippingAmount * 100} /></p>
           </div>
           <hr />
           <div>
             <p>Order Total:</p>
-            <p><FormatPrice price={orderTotal} /></p>
+            <p><FormatPrice price={orderAmount} /></p>
           </div>
-          <Button onClick={handlePayment}>Pay Now</Button>
+          {paymentError && <p className="payment-error" role="alert">{paymentError}</p>}
+          <Button onClick={handlePayment} disabled={isProcessing}>
+            {isProcessing ? 'Starting payment...' : 'Pay Now'}
+          </Button>
         </div>
       </div>
     </Wrapper>
@@ -105,6 +137,14 @@ const Wrapper = styled.section`
     border: none;
     cursor: pointer;
     border-radius: 5px;
+  }
+  button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+  .payment-error {
+    color: #b42318;
+    margin: 1rem 0;
   }
 `;
 

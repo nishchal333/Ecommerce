@@ -8,10 +8,11 @@ import { useCartContext } from '../Context/cart_context';
 import Modal from '../components/Users/Modal';
 import Login from './Users/Login';
 import SignupPage from './Users/SignupPage';
+import { useAuth } from '../Context/AuthContext';
 function Nav() {
   const [menuIcon, setMenuIcon] =useState();
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const { token, logout } = useAuth();
 
   const {total_item }= useCartContext();
 // show page
@@ -19,10 +20,7 @@ function Nav() {
   const [showSignupModal, setShowSignupModal] = useState(false);
 
   const handleLogout = () => {
-    // Remove JWT token from localStorage
-    localStorage.removeItem('token');
-    // Redirect to home page
-    navigate('/');
+    logout();
   };
   const handleProductClick = () => {
     if (!token) {

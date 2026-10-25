@@ -19,7 +19,7 @@ function ListView({products}) {
    <div className='card-data'>
   <h3>{name}</h3>
   <p>
-    <FormatPrice price={price}/>
+    <FormatPrice price={price * 100}/>
   </p>
   <p>{description.slice(0,99)}..</p>
   <NavLink to={`/singleproduct/${id}`} className="btn-main">
@@ -88,7 +88,8 @@ const Wrapper = styled.section`
     h3 {
       margin: 2rem 0;
       font-weight: 300;
-      font-size: 2.4rem;
+      font-size: 1.8rem;
+      line-height: 1.35;
       text-transform: capitalize;
     }
 
@@ -111,6 +112,19 @@ const Wrapper = styled.section`
       a {
         color: rgb(98 84 243);
         font-size: 1.4rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      h3 {
+        margin: 1.4rem 0;
+        font-size: 1.6rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h3 {
+        font-size: 1.45rem;
       }
     }
 

@@ -1,7 +1,9 @@
 require("dotenv").config();
+const mongoose = require("mongoose");
 const connectDB = require("./DATABASE/connectDb");
 const product = require("../Backend/model/schema.js");
-const ProductJson = require("./product.json");
+
+const ProductJson = require("./kaggle-products.json");
 
 const start = async () => {
     try {
@@ -14,11 +16,13 @@ const start = async () => {
         await product.deleteMany({});
         console.log("Existing products deleted");
 
-        // ProductJson se data insert karo
+        // Insert the normalized Kaggle export into MongoDB.
         await product.create(ProductJson);
         console.log("New products inserted successfully");
     } catch (error) {
         console.log(error);
+    } finally {
+        await mongoose.disconnect();
     }
 }
 

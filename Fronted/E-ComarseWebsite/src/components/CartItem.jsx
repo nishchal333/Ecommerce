@@ -32,7 +32,7 @@ function CartItem({ _id, name, image, color, price, amount }) {
     {/* price   */}
     <div className="cart-hide">
       <p>
-        <FormatPrice price={price} />
+        <FormatPrice price={price * 100} />
       </p>
     </div>
     {/* Quantity */}
@@ -45,7 +45,7 @@ function CartItem({ _id, name, image, color, price, amount }) {
 {/* subtotal */}
 <div className="cart-hide">
     <p>
-        <FormatPrice price={price * amount}/>
+        <FormatPrice price={price * amount * 100}/>
     </p>
 </div>
 <div>

@@ -59,27 +59,11 @@ function AboutSection() {
 
         {/* Team Section */}
         <div className='team-section'>
-          <h2>Our Team</h2>
           <div className='team-grid'>
             <div className='team-member'>
               <img src="/img.jpg" alt="Nishchal Jain" />
               <h3>Nishchal Jain</h3>
               <p>Lead Developer</p>
-            </div>
-            <div className='team-member'>
-              <img src="/shanu.jpg" alt="Shashank Lal" />
-              <h3>Shashank Lal</h3>
-              <p>Frontend Developer</p>
-            </div>
-            <div className='team-member'>
-              <img src="/neha.jpg" alt="Neha Surayanshi" />
-              <h3>Neha Surayanshi</h3>
-              <p>UI/UX Designer</p>
-            </div>
-            <div className='team-member'>
-              <img src="/rose.jpg" alt="Rose Kumari" />
-              <h3>Rose Kumari</h3>
-              <p>Backend Developer</p>
             </div>
           </div>
         </div>

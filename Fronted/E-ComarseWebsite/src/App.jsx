@@ -17,6 +17,8 @@ import { ThemeProvider } from 'styled-components';
 import Footer from './components/Footer';
 import PaymentPage from './components/PaymentPage';
 import SuccessPage from './components/sucessPage';
+import { AuthProvider } from './Context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 function App() {
 
  const theme ={
@@ -27,7 +29,7 @@ function App() {
     black: "#000000",
     helper: "#BDC3C7", // Light gray-blue helper color for subtlety
     bg: "#ECF0F1", // Very light blue-gray background for a modern, clean look
-    footer_bg: "#AACCFF", // Same dark blue as heading for a cohesive design
+    footer_bg: "#AACCFF", // Light blue footer background
     btn: "#3498DB", // Vibrant blue button for a pop of color
     border: "rgba(52, 152, 219, 0.5)", // Border matching button color
     hr: "#FFFFFF",
@@ -42,10 +44,10 @@ function App() {
  }
 
   return (
-  
-   
-        <ThemeProvider theme={theme}>
+
+       <ThemeProvider theme={theme}>
        <Router>
+       <AuthProvider>
         <GlobalStyle/>
         <Header/>
         <Routes>
@@ -54,20 +56,19 @@ function App() {
         <Route path="/Login" element={<Login />} />
           <Route path='/' element={<Home/>}/>
           <Route path='/about' element={<About/>}/>
-          <Route path='/ProducrCard' element={<ProducrCard/>}/>
+          <Route path='/ProducrCard' element={<ProtectedRoute><ProducrCard/></ProtectedRoute>}/>
           <Route path='/contact' element={<Contact/>}/>
         
 
           <Route path='/cart' element={<Cart/>}/>
-          <Route path="/PaymentPage" element={<PaymentPage/>} />
+          <Route path="/PaymentPage" element={<ProtectedRoute><PaymentPage/></ProtectedRoute>} />
           <Route path="/success" element={<SuccessPage/>} />
         
-
-
           <Route path='/singleproduct/:id' element={<SinglePage/>}/>
           <Route path='*' element={<Error/>}/>
         </Routes>
         <Footer/>
+       </AuthProvider>
        </Router>
        </ThemeProvider>
      

@@ -4,7 +4,8 @@ const Product = require('./model/schema.js');
 const app = express();
 const connectDB = require("./DATABASE/connectDb.js");
 const cors = require('cors');
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT || 3000;
+const { getallProducts } = require("./controllers/product");
 
 const product_routes = require("./routes/product");
 
@@ -12,7 +13,7 @@ const userRoutes = require('./routes/userRoutes');
 const paymentRoutes = require('./routes/PaymentRoute');
 
 app.get("/", (req,res)=>{
-    res.send("hello I ama bharat");
+    res.send("Hello I am nishchal");
 })
 // Middleware to parse JSON
 app.use(express.json({extended: false }));
@@ -21,9 +22,7 @@ app.use(cors()); // Enable all CORS requests by default
 // Route to fetch products
 app.get('/api/products', async (req, res) => {
     try {
-        const products = await Product.find({});
-        res.json(products);
-       
+        await getallProducts(req, res);
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });
     }
@@ -42,7 +41,7 @@ const start = async () =>{
           })
           
     }catch (error){
-console.log(error);
+        console.log(error);
     }
 }
 start();

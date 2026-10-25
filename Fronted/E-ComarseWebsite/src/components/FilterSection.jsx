@@ -122,8 +122,6 @@ return (
     )
   }
   
-
-
               return(
                 <button
                 key={index}
@@ -146,7 +144,7 @@ return (
       <div className="filter_price">
         <h3>Price</h3>
         <p>
-        <FormatPrice price={price}/>
+        <FormatPrice price={price * 100}/>
         </p>
         <input
           type="range"

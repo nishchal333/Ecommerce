@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled, {keyframes} from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../Context/AuthContext';
 
 const fadeIn = keyframes`
 from {
@@ -126,6 +127,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const { email, password } = formData;
 
@@ -136,13 +138,13 @@ const Login = () => {
   const onSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post('https://bharat-ecommarse-2.onrender.com/api/users/login', formData);
-      localStorage.setItem('token', res.data.token);
+      const res = await axios.post('http://localhost:3000/api/users/login', formData);
+      login(res.data.token);
       setFormData({
         email: '',
         password: ''
       });
-  navigate('/');
+  navigate('/ProducrCard');
     } catch (err) {
       alert('Error logging in user');
     }
